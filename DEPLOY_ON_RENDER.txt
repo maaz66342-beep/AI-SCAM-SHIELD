@@ -1,0 +1,17 @@
+DEPLOY AI SCAM SHIELD ON RENDER (free)
+
+1. Replace your project files with these (app.py, requirements.txt, Dockerfile, .gitignore, .dockerignore).
+2. In the project folder run:
+     git rm -r --cached __pycache__ history.db   (ignore errors if not tracked)
+     git add .
+     git commit -m "Add deployment files"
+     git push
+3. Go to https://render.com -> sign in with GitHub -> New + -> Web Service.
+4. Choose your AI-SCAM-SHIELD repository. Render detects the Dockerfile (Language: Docker).
+5. Instance type: Free. Add an environment variable SECRET_KEY = any long random text.
+6. Click Create Web Service. After the build (5-10 min) you get a link like https://ai-scam-shield.onrender.com
+
+Notes
+- The first person to register on the live site becomes the admin. Register yourself first.
+- On the free plan the database file (history.db) is reset when the service restarts, so register again after a restart. Free services also sleep after inactivity; the first open can take ~1 minute.
+- Run locally as before with: python app.py

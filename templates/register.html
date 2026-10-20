@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Register | AI Scam Shield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A1420; --panel: #132436; --line: #21384A; --paper: #E7EEF3;
+    --accent: #10B981; --accent2: #06B6D4; --scan: #38BDF8; --safe: #22C55E; --danger: #F43F5E; --muted: #7C93A8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--paper); font-family: 'Inter','Segoe UI',system-ui,sans-serif; min-height: 100vh; }
+  h1, h2 { font-family: 'Space Grotesk','Segoe UI',sans-serif; }
+  .wrap { display: grid; grid-template-columns: 1.1fr 1fr; min-height: 100vh; }
+  @media (max-width: 860px) { .wrap { grid-template-columns: 1fr; } .brand-side { min-height: 220px; } }
+  .brand-side {
+    position: relative;
+    background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248,0.12), transparent 55%),
+      radial-gradient(circle at 80% 80%, rgba(14, 165, 165,0.10), transparent 50%), var(--ink);
+    display: flex; flex-direction: column; justify-content: center; padding: 56px;
+    overflow: hidden; border-right: 1px solid var(--line);
+  }
+  .brand-eyebrow { letter-spacing: 4px; font-size: 12px; color: var(--scan); text-transform: uppercase; font-weight: 700; margin-bottom: 18px; }
+  .brand-title { font-size: 38px; font-weight: 700; line-height: 1.15; margin: 0 0 14px; }
+  .brand-title .accent-word { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .brand-copy { color: var(--muted); font-size: 15px; max-width: 380px; line-height: 1.6; margin-bottom: 30px; }
+  .module-list { display: flex; flex-direction: column; gap: 14px; }
+  .module-row { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--paper); }
+  .module-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--scan); flex-shrink: 0; box-shadow: 0 0 8px var(--scan); }
+  .module-row span.label { color: var(--muted); font-size: 13px; }
+  .form-side { display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+  .auth-card { width: 100%; max-width: 360px; }
+  .auth-card h2 { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
+  .auth-card .sub { color: var(--muted); font-size: 13px; margin-bottom: 26px; }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; margin-top: 16px; font-weight: 600; }
+  label:first-of-type { margin-top: 0; }
+  input {
+    width: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+    color: var(--paper); padding: 12px 14px; font-size: 14px; font-family: inherit; transition: border-color 0.15s;
+  }
+  input:focus { outline: none; border-color: var(--scan); box-shadow: 0 0 0 3px rgba(56, 189, 248,0.15); }
+  button.submit-btn {
+    width: 100%; margin-top: 24px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
+    border: none; border-radius: 8px; padding: 13px; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: 'Space Grotesk',sans-serif; letter-spacing: 0.2px; transition: filter 0.15s, transform 0.1s, box-shadow 0.15s;
+    box-shadow: 0 4px 18px rgba(16, 185, 129,0.35);
+  }
+  button.submit-btn:hover { filter: brightness(1.1); box-shadow: 0 6px 22px rgba(6, 182, 212,0.4); }
+  button.submit-btn:active { transform: scale(0.98); }
+  .switch-link { text-align: center; margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .switch-link a { color: var(--scan); text-decoration: none; font-weight: 600; }
+  .switch-link a:hover { text-decoration: underline; }
+  .flash { background: rgba(244, 63, 94,0.10); border: 1px solid var(--danger); color: #FF8A8A; padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand-side">
+    <div class="brand-eyebrow">AI Scam Shield</div>
+    <h1 class="brand-title">One account.<br/><span class="accent-word">Four fraud detectors.</span></h1>
+    <p class="brand-copy">Create your account to start checking job offers, links, offer letters, and payment screenshots.</p>
+    <div class="module-list">
+      <div class="module-row"><span class="module-dot"></span> Fake Job Posting Detector <span class="label">- ML</span></div>
+      <div class="module-row"><span class="module-dot"></span> Phishing Link Checker <span class="label">- Heuristics</span></div>
+      <div class="module-row"><span class="module-dot"></span> Fake Offer Letter Checker <span class="label">- Rules</span></div>
+      <div class="module-row"><span class="module-dot"></span> Payment Screenshot Checker <span class="label">- OCR</span></div>
+    </div>
+  </div>
+  <div class="form-side">
+    <div class="auth-card">
+      <h2>Create account</h2>
+      <p class="sub">Takes less than a minute.</p>
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}{% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      <form method="POST" action="{{ url_for('register') }}">
+        <label>Username</label>
+        <input type="text" name="username" autocomplete="username" required />
+        <label>Password</label>
+        <input type="password" name="password" autocomplete="new-password" required />
+        <label>Confirm Password</label>
+        <input type="password" name="confirm" autocomplete="new-password" required />
+        <button type="submit" class="submit-btn">Register</button>
+      </form>
+      <div class="switch-link">Already have an account? <a href="{{ url_for('login') }}">Log In</a></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Login | AI Scam Shield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0A1420; --panel: #132436; --line: #21384A; --paper: #E7EEF3;
+    --accent: #10B981; --accent2: #06B6D4; --scan: #38BDF8; --safe: #22C55E; --danger: #F43F5E; --muted: #7C93A8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    font-family: 'Inter','Segoe UI',system-ui,sans-serif; color: var(--paper);
+    background:
+      radial-gradient(circle at 20% 20%, rgba(56,189,248,0.10), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(16,185,129,0.08), transparent 50%),
+      var(--ink);
+    padding: 24px;
+  }
+  .admin-card {
+    width: 100%; max-width: 380px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 18px; padding: 34px 30px; box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .lock-badge {
+    width: 56px; height: 56px; border-radius: 14px; margin: 0 auto 18px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 22px rgba(16,185,129,0.35);
+  }
+  .lock-badge svg { width: 26px; height: 26px; color: var(--ink); }
+  h1 {
+    font-family: 'Space Grotesk','Segoe UI',sans-serif; font-size: 22px; font-weight: 700;
+    text-align: center; margin: 0 0 4px;
+  }
+  .sub { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 26px; }
+  .eyebrow {
+    text-align: center; letter-spacing: 3px; font-size: 10.5px; color: var(--scan);
+    text-transform: uppercase; font-weight: 700; margin-bottom: 8px;
+  }
+  label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; margin-top: 16px; font-weight: 600; }
+  label:first-of-type { margin-top: 0; }
+  input {
+    width: 100%; background: var(--ink); border: 1px solid var(--line); border-radius: 8px;
+    color: var(--paper); padding: 12px 14px; font-size: 14px; font-family: inherit; transition: border-color 0.15s;
+  }
+  input:focus { outline: none; border-color: var(--scan); box-shadow: 0 0 0 3px rgba(56,189,248,0.15); }
+  button.submit-btn {
+    width: 100%; margin-top: 24px; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
+    border: none; border-radius: 8px; padding: 13px; font-size: 15px; font-weight: 700;
+    cursor: pointer; font-family: 'Space Grotesk',sans-serif; letter-spacing: 0.2px;
+    transition: filter 0.15s, transform 0.1s, box-shadow 0.15s; box-shadow: 0 4px 18px rgba(16,185,129,0.35);
+  }
+  button.submit-btn:hover { filter: brightness(1.1); box-shadow: 0 6px 22px rgba(6,182,212,0.4); }
+  button.submit-btn:active { transform: scale(0.98); }
+  .switch-link { text-align: center; margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .switch-link a { color: var(--scan); text-decoration: none; font-weight: 600; }
+  .switch-link a:hover { text-decoration: underline; }
+  .flash { background: rgba(244,63,94,0.10); border: 1px solid var(--danger); color: #FF8A8A; padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+  <div class="admin-card">
+    <div class="lock-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <div class="eyebrow">AI Scam Shield</div>
+    <h1>Admin Access</h1>
+    <p class="sub">Restricted area - authorized administrators only.</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}{% for m in messages %}<div class="flash">{{ m }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('admin_login') }}">
+      <label>Admin Username</label>
+      <input type="text" name="username" autocomplete="username" required autofocus />
+      <label>Password</label>
+      <input type="password" name="password" autocomplete="current-password" required />
+      <button type="submit" class="submit-btn">Enter Admin Panel</button>
+    </form>
+    <div class="switch-link">Not an admin? <a href="{{ url_for('login') }}">Go to user login</a></div>
+  </div>
+</body>
+</html>

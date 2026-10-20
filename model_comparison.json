@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Logistic Regression",
+    "accuracy": 94.68,
+    "precision": 92.0,
+    "recall": 97.87,
+    "f1_score": 94.85
+  },
+  {
+    "name": "Naive Bayes",
+    "accuracy": 94.68,
+    "precision": 92.0,
+    "recall": 97.87,
+    "f1_score": 94.85
+  },
+  {
+    "name": "Random Forest",
+    "accuracy": 93.62,
+    "precision": 91.84,
+    "recall": 95.74,
+    "f1_score": 93.75
+  }
+]

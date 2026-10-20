@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin Panel | AI Scam Shield</title>
+<style>
+  :root {
+    --ink: #0A1420; --panel: #132436; --line: #21384A; --paper: #E7EEF3; --accent: #10B981; --accent2: #06B6D4; --scan: #38BDF8;
+    --safe: #22C55E; --warn: #F59E0B; --danger: #F43F5E; --muted: #7C93A8;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--paper); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+  header { padding: 24px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; max-width: 1000px; margin: 0 auto; }
+  .eyebrow { letter-spacing: 3px; font-size: 11px; color: var(--scan); text-transform: uppercase; font-weight: 700; }
+  h1 { margin: 4px 0 0; font-size: 24px; font-weight: 800; }
+  .back-link { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 600; border: 1px solid var(--line); padding: 6px 14px; border-radius: 999px; }
+  .back-link:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .stat-box { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 10px; text-align: center; }
+  .stat-num { font-size: 24px; font-weight: 800; }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 20px; }
+  .card h3 { margin: 0 0 14px; font-size: 15px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 8px; border-bottom: 1px solid var(--line); }
+  td { padding: 8px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: none; }
+  .badge-admin { background: rgba(14, 165, 165,0.15); color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; }
+  .result-pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+  .result-pill.safe { background: rgba(34, 197, 94,0.15); color: var(--safe); }
+  .result-pill.warn { background: rgba(245, 158, 11,0.15); color: var(--warn); }
+  .result-pill.danger { background: rgba(244, 63, 94,0.15); color: var(--danger); }
+  .muted-note { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div><div class="eyebrow">AI Scam Shield</div><h1>Admin Panel</h1></div>
+  <a href="/" class="back-link">← Back to Dashboard</a>
+</header>
+
+<main>
+  <div class="stats-grid" id="stats-grid">
+    <div class="stat-box"><div class="stat-num" id="stat-users">-</div><div class="stat-label">Registered Users</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-total">-</div><div class="stat-label">Total Checks</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-flagged">-</div><div class="stat-label">Flagged Risky</div></div>
+    <div class="stat-box"><div class="stat-num" id="stat-safe">-</div><div class="stat-label">Looked Safe</div></div>
+  </div>
+
+  <div class="card"><h3>Checks by Module (all users)</h3><div id="module-breakdown" class="muted-note">Loading...</div></div>
+
+  <div class="card">
+    <h3>Registered Users</h3>
+    <table>
+      <thead><tr><th>ID</th><th>Username</th><th>Role</th><th>Checks Run</th><th>Joined</th></tr></thead>
+      <tbody id="users-rows"><tr><td colspan="5" class="muted-note">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Recent Activity (all users)</h3>
+    <table>
+      <thead><tr><th>User</th><th>Module</th><th>Summary</th><th>Result</th><th>Confidence</th><th>When</th></tr></thead>
+      <tbody id="history-rows"><tr><td colspan="6" class="muted-note">Loading...</td></tr></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>User Feedback &amp; Reviews</h3>
+    <table>
+      <thead><tr><th>User</th><th>Message</th><th>Rating</th><th>When</th></tr></thead>
+      <tbody id="feedback-rows"><tr><td colspan="4" class="muted-note">Loading...</td></tr></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+function pillClassFor(result) {
+  const r = result.toLowerCase();
+  if (r.includes('genuine') || r === 'safe') return 'safe';
+  if (r.includes('suspicious') || r.includes('manual')) return 'warn';
+  return 'danger';
+}
+
+function el(tag, opts) {
+  const node = document.createElement(tag);
+  if (opts) {
+    if (opts.text !== undefined) node.textContent = opts.text;
+    if (opts.className) node.className = opts.className;
+    if (opts.style) Object.assign(node.style, opts.style);
+  }
+  return node;
+}
+
+function clearChildren(node) {
+  while (node.firstChild) node.removeChild(node.firstChild);
+}
+
+function renderModuleBreakdown(container, byModule) {
+  clearChildren(container);
+  if (!byModule.length) {
+    container.appendChild(el('span', { className: 'muted-note', text: 'No checks yet.' }));
+    return;
+  }
+  byModule.forEach(m => {
+    const row = el('div', { style: { display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid var(--line)' } });
+    row.appendChild(el('span', { text: m.module }));
+    row.appendChild(el('span', { text: String(m.count) }));
+    container.appendChild(row);
+  });
+}
+
+function renderUsersTable(tbody, users) {
+  clearChildren(tbody);
+  if (!users.length) {
+    const tr = el('tr');
+    const td = el('td', { className: 'muted-note', text: 'No users yet.' });
+    td.colSpan = 5;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+  users.forEach(u => {
+    const tr = el('tr');
+    tr.appendChild(el('td', { text: String(u.id) }));
+    tr.appendChild(el('td', { text: u.username }));
+
+    const roleTd = el('td');
+    if (u.is_admin) {
+      roleTd.appendChild(el('span', { className: 'badge-admin', text: 'Admin' }));
+    } else {
+      roleTd.textContent = 'User';
+    }
+    tr.appendChild(roleTd);
+
+    tr.appendChild(el('td', { text: String(u.check_count) }));
+    tr.appendChild(el('td', { text: new Date(u.created_at).toLocaleDateString() }));
+    tbody.appendChild(tr);
+  });
+}
+
+function renderHistoryTable(tbody, history) {
+  clearChildren(tbody);
+  if (!history.length) {
+    const tr = el('tr');
+    const td = el('td', { className: 'muted-note', text: 'No history yet.' });
+    td.colSpan = 6;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+  history.forEach(h => {
+    const tr = el('tr');
+    tr.appendChild(el('td', { text: h.username || 'Unknown' }));
+    tr.appendChild(el('td', { text: h.module }));
+    tr.appendChild(el('td', { text: h.summary }));
+
+    const resultTd = el('td');
+    resultTd.appendChild(el('span', { className: 'result-pill ' + pillClassFor(h.result), text: h.result }));
+    tr.appendChild(resultTd);
+
+    tr.appendChild(el('td', { text: h.confidence }));
+    tr.appendChild(el('td', { text: new Date(h.created_at).toLocaleString() }));
+    tbody.appendChild(tr);
+  });
+}
+
+function renderFeedbackTable(tbody, feedback) {
+  clearChildren(tbody);
+  if (!feedback.length) {
+    const tr = el('tr');
+    const td = el('td', { className: 'muted-note', text: 'No feedback submitted yet.' });
+    td.colSpan = 4;
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    return;
+  }
+  feedback.forEach(f => {
+    const tr = el('tr');
+    tr.appendChild(el('td', { text: f.current_username || f.username || 'Unknown' }));
+    tr.appendChild(el('td', { text: f.message }));
+    tr.appendChild(el('td', { text: f.rating ? ('★'.repeat(f.rating) + '☆'.repeat(5 - f.rating)) : '-' }));
+    tr.appendChild(el('td', { text: new Date(f.created_at).toLocaleString() }));
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadAdminData() {
+  try {
+    const [statsRes, usersRes, historyRes, feedbackRes] = await Promise.all([
+      fetch('/api/admin/stats'), fetch('/api/admin/users'), fetch('/api/admin/history'), fetch('/api/admin/feedback'),
+    ]);
+    const stats = await statsRes.json();
+    const users = await usersRes.json();
+    const history = await historyRes.json();
+    const feedback = await feedbackRes.json();
+
+    document.getElementById('stat-users').textContent = stats.total_users;
+    document.getElementById('stat-total').textContent = stats.total_checks;
+    document.getElementById('stat-flagged').textContent = stats.flagged_count;
+    document.getElementById('stat-safe').textContent = stats.safe_count;
+
+    renderModuleBreakdown(document.getElementById('module-breakdown'), stats.by_module);
+    renderUsersTable(document.getElementById('users-rows'), users);
+    renderHistoryTable(document.getElementById('history-rows'), history);
+    renderFeedbackTable(document.getElementById('feedback-rows'), feedback);
+  } catch (e) { console.error(e); }
+}
+loadAdminData();
+</script>
+
+</body>
+</html>
